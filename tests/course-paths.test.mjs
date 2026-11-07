@@ -1,0 +1,45 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import { discoverCourseDirectories, findTranslation } from '../scripts/course-paths.mjs';
+
+test('moving courses into Notes preserves topic paths and avoids duplicates during migration', t => {
+  const base = fs.realpathSync(os.tmpdir());
+  const root = fs.mkdtempSync(path.join(base, 'devlibrary-notes-test-'));
+  t.after(() => {
+    const resolved = fs.realpathSync(root);
+    assert.ok(resolved.startsWith(`${base}${path.sep}devlibrary-notes-test-`));
+    fs.rmSync(resolved, { recursive: true, maxRetries: 3, retryDelay: 100 });
+  });
+  const relative = path.join('mongo', '07. Read Operations');
+  const oldDir = path.join(root, relative);
+  const newDir = path.join(root, 'Notes', relative);
+  fs.mkdirSync(oldDir, { recursive: true });
+  fs.writeFileSync(path.join(oldDir, 'README.md'), '# Original English');
+  fs.writeFileSync(path.join(oldDir, 'README.ru.md'), '# Исходный русский');
+  const before = discoverCourseDirectories(root);
+  fs.mkdirSync(newDir, { recursive: true });
+  fs.writeFileSync(path.join(newDir, 'README.ru.md'), '# Обновлённый русский');
+  const during = discoverCourseDirectories(root);
+  assert.equal(during.length, 1);
+  assert.equal(during[0].relative, before[0].relative);
+  assert.equal(findTranslation(during[0], 'README.ru.md'), path.join(newDir, 'README.ru.md'));
+  assert.equal(findTranslation(during[0], 'README.md'), path.join(oldDir, 'README.md'));
+  fs.renameSync(path.join(oldDir, 'README.md'), path.join(newDir, 'README.md'));
+  const after = discoverCourseDirectories(path.join(root, 'Notes'));
+  assert.equal(after[0].relative, before[0].relative);
+  assert.equal(findTranslation(after[0], 'README.md'), path.join(newDir, 'README.md'));
+  const nestedNotes = path.join(root, 'mongo', 'Notes', '07. Read Operations');
+  fs.mkdirSync(nestedNotes, { recursive: true });
+  fs.renameSync(path.join(newDir, 'README.md'), path.join(nestedNotes, 'README.md'));
+  const nested = discoverCourseDirectories(root);
+  assert.equal(nested.length, 1);
+  assert.equal(nested[0].relative, before[0].relative);
+  assert.equal(findTranslation(nested[0], 'README.md'), path.join(nestedNotes, 'README.md'));
+  const toolchain = path.join(root, '.course-notes', 'toolchain');
+  fs.mkdirSync(toolchain, { recursive: true });
+  fs.writeFileSync(path.join(toolchain, 'README.md'), '# Not course content');
+  assert.equal(discoverCourseDirectories(root).length, 1);
+});

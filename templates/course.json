@@ -1,0 +1,12 @@
+{
+  "title": "Название курса",
+  "category": "backend",
+  "difficulty": "beginner",
+  "mark": "GO",
+  "color": "#00ADD8",
+  "tags": ["Go", "Backend"],
+  "descriptions": {
+    "ru": "Конкретный результат, который получится после курса.",
+    "en": "The concrete outcome this course teaches."
+  }
+}

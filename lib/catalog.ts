@@ -1,0 +1,6 @@
+type Localized = { ru: string; en: string };
+export type Lesson = { id: string; course: string; title: string; titles: Localized; source: string; languages: string[]; minutes: number; xp: number; overview: boolean; codeBlocks: number; sourceCodeFiles: number };
+export type Course = { id: string; source: string; title: string; category: string; difficulty: string; mark: string; color: string; tags: string[]; descriptions: Localized; lessons: string[] };
+export type Catalog = { categories: { id: string; titles: Localized }[]; courses: Course[]; lessons: Lesson[]; importedFiles: number; sourceCodeFiles: number; knownLessonIds: string[]; knownCourseIds: string[]; storage: { root: string; inbox: string }; trash: { id: string; title: string; deletedAt: string }[] };
+// Keep old bookmarks usable after replacing technology branches with courses.
+export const legacyCourse = (id: string) => ({ spring: 'spring-basics', microservices: 'spring-microservices', docker: 'spring-microservices', kubernetes: 'spring-microservices', testing: 'spring-microservices', 'build-tools': 'spring-microservices', java: 'java', go: 'go-microservices', grpc: 'go-microservices', observability: 'go-microservices', mongo: 'mongodb', fyne: 'fyne' } as Record<string,string>)[id];

@@ -1,0 +1,15 @@
+packages:
+  - .
+
+# Keep the existing native-image override during the package-manager migration.
+overrides:
+  miniflare>sharp: 0.35.4
+
+# Explicitly approve the native installers used by Next.js and the retained
+# developer tools. No interactive approval is needed inside a Docker build.
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  workerd: true
+  fsevents: false

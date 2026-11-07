@@ -1,0 +1,23 @@
+services:
+  devlibrary:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: devlibrary:local
+    restart: unless-stopped
+    init: true
+    ports:
+      - "${DEVLIBRARY_BIND_ADDRESS:-127.0.0.1}:${DEVLIBRARY_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: "3000"
+      DEVLIBRARY_DATA_DIR: /app/library-data
+      DEVLIBRARY_ALLOW_NETWORK: "${DEVLIBRARY_ALLOW_NETWORK:-false}"
+    volumes:
+      - library-data:/app/library-data
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  library-data:

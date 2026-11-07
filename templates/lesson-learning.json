@@ -1,0 +1,29 @@
+{
+  "REPLACE_WITH_REAL_LESSON_ID": {
+    "programmingLanguage": "Python",
+    "sourceNote": {
+      "ru": "Шаблон. До публикации замени эту запись, добавь проверенную ссылку video и минимум пять вопросов по реальному конспекту.",
+      "en": "Template. Replace this note, add a verified video link and at least five questions grounded in the actual notes before publishing."
+    },
+    "quiz": {
+      "ru": [
+        {
+          "id": "assignment-meaning",
+          "prompt": "Что делает оператор = в Python?",
+          "options": ["Проверяет равенство", "Связывает имя со значением", "Завершает программу"],
+          "answer": 1,
+          "explanation": "= выполняет присваивание. Проверка равенства записывается как ==."
+        }
+      ],
+      "en": [
+        {
+          "id": "assignment-meaning",
+          "prompt": "What does the = operator do in Python?",
+          "options": ["Tests equality", "Binds a name to a value", "Terminates the program"],
+          "answer": 1,
+          "explanation": "= performs assignment. Equality is tested with ==."
+        }
+      ]
+    }
+  }
+}

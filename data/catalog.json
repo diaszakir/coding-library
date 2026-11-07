@@ -1,0 +1,78 @@
+{
+  "categories": [
+    {
+      "id": "all",
+      "titles": {
+        "ru": "Все направления",
+        "en": "All tracks"
+      }
+    },
+    {
+      "id": "frontend-mobile",
+      "titles": {
+        "ru": "Frontend / Mobile",
+        "en": "Frontend / Mobile"
+      }
+    },
+    {
+      "id": "backend",
+      "titles": {
+        "ru": "Backend",
+        "en": "Backend"
+      }
+    },
+    {
+      "id": "devops",
+      "titles": {
+        "ru": "DevOps",
+        "en": "DevOps"
+      }
+    },
+    {
+      "id": "data-science",
+      "titles": {
+        "ru": "Data Science",
+        "en": "Data Science"
+      }
+    },
+    {
+      "id": "nlp",
+      "titles": {
+        "ru": "NLP",
+        "en": "NLP"
+      }
+    },
+    {
+      "id": "computer-vision",
+      "titles": {
+        "ru": "Computer Vision",
+        "en": "Computer Vision"
+      }
+    },
+    {
+      "id": "fundamentals",
+      "titles": {
+        "ru": "Основы и алгоритмы",
+        "en": "Fundamentals"
+      }
+    },
+    {
+      "id": "databases",
+      "titles": {
+        "ru": "Базы данных",
+        "en": "Databases"
+      }
+    },
+    {
+      "id": "tools",
+      "titles": {
+        "ru": "Инструменты и AI",
+        "en": "Tools & AI"
+      }
+    }
+  ],
+  "courses": [],
+  "lessons": [],
+  "importedFiles": 0,
+  "sourceCodeFiles": 0
+}

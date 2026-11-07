@@ -1,0 +1,38 @@
+# Allow only application source and public seed content into the build context.
+# This excludes .git, credentials, generated reports, local data, and backups.
+**
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!next.config.ts
+!postcss.config.mjs
+!tsconfig.json
+!next-env.d.ts
+!cloudflare-env.d.ts
+!components.json
+!app/
+!app/**
+!components/
+!components/**
+!hooks/
+!hooks/**
+!lib/
+!lib/**
+!data/
+!data/**
+!public/
+!public/**
+!vendor/
+!vendor/**
+!scripts/
+!scripts/launch.mjs
+!scripts/create-course.mjs
+!scripts/import-courses.mjs
+!scripts/note-files.mjs
+!scripts/course-paths.mjs
+!scripts/prepare-portable.mjs
+!templates/
+!templates/**
+# Personal course payloads are replaced by generic seed files in the builder.
+data/*.json
+public/content/
