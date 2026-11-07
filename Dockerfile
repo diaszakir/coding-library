@@ -4,7 +4,10 @@ WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm install --global pnpm@11.25.0
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=devlibrary-pnpm11-store,target=/var/cache/devlibrary-pnpm-store,sharing=locked \
+    --mount=type=cache,id=devlibrary-pnpm11-meta,target=/root/.cache/pnpm,sharing=locked \
+    pnpm install --frozen-lockfile --store-dir /var/cache/devlibrary-pnpm-store \
+      --network-concurrency=8 --fetch-timeout=180000
 
 FROM dependencies AS builder
 ENV DEVLIBRARY_STANDALONE=true
