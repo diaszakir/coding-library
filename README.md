@@ -4,25 +4,52 @@
 
 Переносимая версия начинается с пустой библиотеки. Личные курсы, прогресс, резервные копии и история исходного проекта в неё не включаются.
 
-## Docker
+## Клонирование с GitHub и запуск через Docker
 
-Нужен Docker с Compose. В папке проекта:
+На компьютере должны быть установлены Git и Docker с Compose. Перед запуском открой Docker Desktop или запусти Docker Engine. Node.js и pnpm на компьютере для этого способа не требуются. Первой сборке нужен интернет для загрузки образа и зависимостей.
+
+После публикации проекта на GitHub другой пользователь может выполнить команды ниже в PowerShell, терминале macOS или Linux. Замени `YOUR_LOGIN` на логин владельца или название организации, где находится репозиторий `devlibrary-portable`:
 
 ```sh
-docker compose up --build -d
+git clone https://github.com/YOUR_LOGIN/devlibrary-portable.git
+cd devlibrary-portable
+docker compose up --build -d --wait
+docker compose ps
 ```
 
-Открой [http://localhost:3000](http://localhost:3000). Инструкция для ИИ: [http://localhost:3000/agents](http://localhost:3000/agents).
+Дождись состояния `healthy`, затем открой [http://localhost:3000](http://localhost:3000). Инструкция для ИИ: [http://localhost:3000/agents](http://localhost:3000/agents). Для приватного GitHub-репозитория у пользователя должен быть доступ к нему.
+
+**На новом устройстве первый запуск создаёт пустую библиотеку: 0 курсов и 0 уроков.** Собственные курсы пользователь добавляет через **Управление библиотекой → Добавить курс**. Курсы, прогресс и резервные копии автора не входят в репозиторий и образ. Дополнительный импорт и настройка `DEVLIBRARY_SEED` для пустого старта не нужны.
+
+Проверить пустую библиотеку из контейнера:
+
+```sh
+docker compose exec devlibrary node -e "fetch('http://127.0.0.1:3000/api/library').then(r=>r.json()).then(c=>console.log({courses:c.courses.length,lessons:c.lessons.length}))"
+```
+
+До добавления своих материалов ожидается `{ courses: 0, lessons: 0 }`.
+
+Повторный запуск и перезапуск контейнера сохраняют созданные курсы и прогресс. Если проект уже запускался на этом компьютере, Compose может использовать существующий том; повторное клонирование само по себе не очищает библиотеку.
+
+Команды управления из папки `devlibrary-portable`:
+
+```sh
+docker compose restart
+docker compose stop
+docker compose start
+```
+
+Посмотреть журнал работы (выход из просмотра — `Ctrl+C`):
 
 ```sh
 docker compose logs -f
-docker compose stop
-docker compose start
 ```
 
 Данные лежат в постоянном томе `library-data`, подключённом к `/app/library-data`. Пересборка и `docker compose down` сохраняют их. `docker compose down -v` удаляет том вместе с библиотекой.
 
 Образ всегда собирается с пустым каталогом. `.dockerignore` исключает личные материалы; сборщик создаёт нейтральные файлы реестра. Образ работает от непривилегированного пользователя. Доступность проверяется через `/api/health`.
+
+Официальные инструкции: [клонирование репозитория](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository), [запуск Docker Compose](https://docs.docker.com/reference/cli/docker/compose/up).
 
 ## pnpm
 
